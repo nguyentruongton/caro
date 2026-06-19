@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@import "@bug-on/md3-react/index.css";
+@import "@bug-on/md3-tailwind";
+@import "@bug-on/md3-react/typography.css";
+
+:root {
+  color: #201a26;
+  background: #f8f5ff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(83, 109, 254, 0.12), transparent 34rem),
+    linear-gradient(145deg, #faf8ff 0%, #eef8f1 45%, #fff8ee 100%);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.board-size {
+  width: min(calc(100vw - 2rem), 560px);
+}
+
+@media (min-width: 1024px) {
+  .board-size {
+    width: min(58vw, 680px);
+  }
+}
+
+.caro-board {
+  background: #d8cfe5;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .piece-pop {
+    animation: piece-pop 180ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  @keyframes piece-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.72);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
