@@ -3,10 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f7f4ff" />
-    <title>Cờ Caro</title>
+
+    <!-- Primary SEO Metadata -->
+    <title>Cờ Caro Online - Chơi Cờ Caro Miễn Phí Trên Trình Duyệt</title>
+    <meta name="title" content="Cờ Caro Online - Chơi Cờ Caro Miễn Phí Trên Trình Duyệt" />
+    <meta
+      name="description"
+      content="Chơi cờ Caro online miễn phí với giao diện Material Design 3 hiện đại, mượt mà. Đấu với bạn bè hoặc so tài cùng AI thông minh không cần cài đặt."
+    />
+    <meta
+      name="keywords"
+      content="cờ caro, caro online, choi co caro, gomoku, tic tac toe, co caro 2 nguoi, co caro ai, game tri tue"
+    />
+    <meta name="author" content="Nguyen Truong Ton" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://caro.stark.id.vn/" />
+
+    <!-- Theme & Mobile App Capability -->
+    <meta name="theme-color" content="#6750a4" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Cờ Caro" />
+
+    <!-- Favicon & Web Manifest -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph / Facebook / Zalo -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://caro.stark.id.vn/" />
+    <meta property="og:site_name" content="Cờ Caro Online" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:title" content="Cờ Caro Online - Chơi Cờ Caro Miễn Phí Trên Trình Duyệt" />
+    <meta
+      property="og:description"
+      content="Chơi cờ Caro online miễn phí với giao diện Material Design 3 hiện đại, mượt mà. Đấu với bạn bè hoặc so tài cùng AI thông minh không cần cài đặt."
+    />
+    <meta property="og:image" content="https://caro.stark.id.vn/og-image.png" />
+    <meta property="og:image:secure_url" content="https://caro.stark.id.vn/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bàn cờ Caro Online phong cách Material Design 3" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cờ Caro Online - Chơi Cờ Caro Miễn Phí Trên Trình Duyệt" />
+    <meta
+      name="twitter:description"
+      content="Chơi cờ Caro online miễn phí với giao diện Material Design 3 hiện đại, mượt mà. Đấu với bạn bè hoặc so tài cùng AI thông minh không cần cài đặt."
+    />
+    <meta name="twitter:image" content="https://caro.stark.id.vn/og-image.png" />
+    <meta name="twitter:image:alt" content="Bàn cờ Caro Online phong cách Material Design 3" />
+
+    <!-- Structured Data (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://caro.stark.id.vn/#webapp",
+            "name": "Cờ Caro Online",
+            "url": "https://caro.stark.id.vn/",
+            "description": "Chơi cờ Caro online miễn phí với giao diện Material Design 3 hiện đại, mượt mà. Đấu với bạn bè hoặc so tài cùng AI thông minh không cần cài đặt.",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires HTML5 and JavaScript",
+            "inLanguage": "vi",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "VND"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Nguyen Truong Ton"
+            }
+          },
+          {
+            "@type": "VideoGame",
+            "@id": "https://caro.stark.id.vn/#game",
+            "name": "Cờ Caro",
+            "url": "https://caro.stark.id.vn/",
+            "genre": ["Board Game", "Strategy Game", "Gomoku"],
+            "gamePlatform": ["Web Browser", "Mobile Browser"],
+            "playMode": ["SinglePlayer", "MultiPlayer"],
+            "inLanguage": "vi",
+            "description": "Trò chơi cờ Caro (Gomoku / Tic-Tac-Toe 5 ô) kinh điển trên nền web với luật chơi 5 nước liên tiếp để chiến thắng."
+          }
+        ]
+      }
+    </script>
   </head>
-  <body>
+  <body class="font-md3-expressive">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

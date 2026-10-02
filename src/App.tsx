@@ -1,9 +1,10 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
+import { DEFAULT_SPATIAL_SPRING, FAST_EFFECTS_SPRING, FAST_SPATIAL_SPRING } from "@bug-on/m3-tokens";
+import { MD3ThemeProvider, MaterialSymbolsPreconnect } from "@bug-on/m3-expressive/core";
+import { Button, ButtonDistribute, ButtonGroup } from "@bug-on/m3-expressive/buttons";
+import { Chip } from "@bug-on/m3-expressive/forms";
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  Chip,
   Dialog,
   DialogBody,
   DialogContent,
@@ -11,11 +12,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  MD3ThemeProvider,
-  MaterialSymbolsPreconnect,
-  ShapeSvg,
-  Text,
-} from "@bug-on/md3-react";
+} from "@bug-on/m3-expressive/overlays";
+import { Card, Text } from "@bug-on/m3-expressive/layout";
+import { ShapeSvg } from "@bug-on/m3-expressive/shapes";
 import {
   BOARD_SIZE,
   type Cell,
@@ -169,7 +168,7 @@ function CaroGame() {
   }, []);
 
   return (
-    <main className="min-h-screen px-3 py-3 text-[#201a26] sm:px-6 sm:py-4 lg:px-8">
+    <main className="min-h-screen px-3 py-3 text-m3-on-surface sm:px-6 sm:py-4 lg:px-8">
       <div className="mx-auto flex min-h-[calc(100vh-1.5rem)] w-full max-w-7xl flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
         <section className="flex flex-col items-center gap-3">
           <GameHeader status={statusCopy} />
@@ -216,18 +215,25 @@ function GameHeader({ status }: { status: string }) {
   return (
     <header className="flex w-full max-w-3xl items-center justify-between gap-3">
       <div>
-        <Text as="h1" variant="headline-sm" className="font-extrabold text-[#251533]">
+        <Text as="h1" variant="headline-sm" className="font-extrabold text-m3-on-surface">
           Cờ Caro
         </Text>
-        <Text as="p" variant="body-sm" className="mt-1 text-[#675c6f]">
+        <Text as="p" variant="body-sm" className="mt-1 text-m3-on-surface-variant">
           Người chơi với máy
         </Text>
       </div>
-      <Chip
-        variant="assist"
-        label={status}
-        className="shrink-0 bg-[#eee3ff]"
-      />
+      <AnimatePresence mode="wait">
+        <m.div
+          key={status}
+          initial={{ opacity: 0, y: -4, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 4, scale: 0.95 }}
+          transition={FAST_EFFECTS_SPRING}
+          className="shrink-0"
+        >
+          <Chip variant="assist" label={status} />
+        </m.div>
+      </AnimatePresence>
     </header>
   );
 }
@@ -250,10 +256,13 @@ function Board({
   return (
     <Card
       variant="filled"
-      className="board-size aspect-square overflow-hidden rounded-[8px] border border-[#d9cfe5] bg-[#fbf7ff] p-1.5 sm:p-2"
+      disableElevation
+      morphRadius={{ rest: "large", hover: "extraLarge" }}
+      forceMotion
+      className="board-size aspect-square overflow-hidden rounded-m3-xl bg-m3-surface-container-low p-1.5 sm:p-2"
     >
       <div
-        className="caro-board grid h-full w-full gap-px overflow-hidden rounded-[6px] border border-[#c8bed3]"
+        className="caro-board grid h-full w-full gap-px overflow-hidden rounded-m3-lg"
         style={BOARD_GRID_STYLE}
         role="grid"
         aria-label="Bàn cờ Caro 15 nhân 15"
@@ -304,13 +313,13 @@ const BoardCell = memo(function BoardCell({
 }) {
   const cornerRadius =
     rowIndex === 0 && colIndex === 0
-      ? "rounded-tl-[5px]"
+      ? "rounded-tl-m3-xs"
       : rowIndex === 0 && colIndex === BOARD_SIZE - 1
-        ? "rounded-tr-[5px]"
+        ? "rounded-tr-m3-xs"
         : rowIndex === BOARD_SIZE - 1 && colIndex === 0
-          ? "rounded-bl-[5px]"
+          ? "rounded-bl-m3-xs"
           : rowIndex === BOARD_SIZE - 1 && colIndex === BOARD_SIZE - 1
-            ? "rounded-br-[5px]"
+            ? "rounded-br-m3-xs"
             : "";
 
   const handleClick = useCallback(() => {
@@ -325,21 +334,20 @@ const BoardCell = memo(function BoardCell({
       disabled={!canPlay || Boolean(cell)}
       onClick={handleClick}
       className={[
-        "relative flex h-full min-h-0 w-full min-w-0 items-center justify-center bg-[#fffbff] text-[clamp(0.75rem,3.4vw,1.45rem)] font-black leading-none transition",
+        "relative flex h-full min-h-0 w-full min-w-0 items-center justify-center bg-m3-surface text-[clamp(0.75rem,3.4vw,1.45rem)] font-black leading-none transition-colors",
         cornerRadius,
-        "focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#6750a4]",
-        !cell && canPlay ? "hover:bg-[#f2eaff]" : "",
-        isLast ? "bg-[#eaddff]" : "",
-        isHint ? "bg-[#d5f6df]" : "",
-        isWinner ? "z-[1] outline outline-2 outline-offset-[-2px]" : "",
-        isWinner && cell === "human" ? "bg-[#eadcff] outline-[#7c3aed]" : "",
-        isWinner && cell === "machine" ? "bg-[#d7f8df] outline-[#079669]" : "",
+        "focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-m3-primary",
+        !cell && canPlay ? "hover:bg-m3-primary/8" : "",
+        isLast ? "bg-m3-primary-container" : "",
+        isHint ? "bg-m3-tertiary-container/60" : "",
+        isWinner && cell === "human" ? "z-1 bg-m3-primary-fixed-dim" : "",
+        isWinner && cell === "machine" ? "z-1 bg-m3-tertiary-fixed-dim" : "",
       ].join(" ")}
     >
       {cell ? (
         <GamePiece player={cell} size="board" />
       ) : isHint ? (
-        <span className="size-[34%] rounded-full border-2 border-dashed border-[#2f7d43]" />
+        <span className="size-[34%] rounded-full border-2 border-dashed border-m3-tertiary" />
       ) : null}
     </button>
   );
@@ -357,27 +365,29 @@ function ActionRail({
   showHintDisabled: boolean;
 }) {
   return (
-    <div className="flex w-full max-w-3xl items-center gap-2 rounded-[8px] border border-[#eadff1] bg-[#fbf7ff] p-1.5 sm:p-2">
-      <Button
-        colorStyle="tonal"
-        size="md"
-        shape="square"
-        onClick={onReset}
-        className="flex-1"
-      >
-        Chơi lại
-      </Button>
-      <Button
-        colorStyle="filled"
-        size="md"
-        shape="square"
-        loading={isThinking}
-        disabled={showHintDisabled}
-        onClick={onHint}
-        className="flex-1"
-      >
-        Gợi ý
-      </Button>
+    <div className="w-full max-w-3xl rounded-m3-xl bg-m3-surface-container-low p-1.5 sm:p-2">
+      <ButtonDistribute mode="dynamic" className="w-full">
+        <Button
+          colorStyle="tonal"
+          size="md"
+          shape="square"
+          onClick={onReset}
+          className="flex-1"
+        >
+          Chơi lại
+        </Button>
+        <Button
+          colorStyle="filled"
+          size="md"
+          shape="square"
+          loading={isThinking}
+          disabled={showHintDisabled}
+          onClick={onHint}
+          className="flex-1"
+        >
+          Gợi ý
+        </Button>
+      </ButtonDistribute>
     </div>
   );
 }
@@ -397,15 +407,15 @@ function WinnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => (nextOpen ? undefined : onClose())}>
-      <DialogContent hideCloseButton className="max-w-[calc(100vw-2rem)] rounded-[8px]">
+      <DialogContent hideCloseButton className="max-w-[calc(100vw-2rem)] rounded-m3-xl">
         <DialogHeader>
           <DialogTitle>{playerLabel[winner.player]} chiến thắng</DialogTitle>
           <DialogDescription>Chuỗi 5 quân liên tiếp đã được tô sáng trên bàn cờ.</DialogDescription>
         </DialogHeader>
         <DialogBody>
-          <div className="flex items-center gap-3 rounded-[8px] bg-[#f8f1fb] p-3">
+          <div className="flex items-center gap-3 rounded-m3-lg bg-m3-surface-container p-3">
             <GamePiece player={winner.player} size="marker" />
-            <Text as="p" variant="body-md" className="font-semibold text-[#30263a]">
+            <Text as="p" variant="body-md" className="font-semibold text-m3-on-surface">
               {winner.player === "human" ? "Bạn đã thắng ván này." : "Máy đã thắng ván này."}
             </Text>
           </div>
@@ -445,13 +455,13 @@ function GameInfoPanel({
   const recentMoves = moves.slice(-3).reverse();
 
   return (
-    <Card variant="filled" className="rounded-[8px] border border-[#eadff1] bg-[#fbf7ff] p-3 sm:p-4">
+    <Card variant="filled" disableElevation className="rounded-m3-xl bg-m3-surface-container-low p-3 sm:p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <Text as="h2" variant="title-md" className="font-bold">
+          <Text as="h2" variant="title-md" className="font-bold text-m3-on-surface">
             Ván đấu
           </Text>
-          <Text as="p" variant="body-sm" className="mt-0.5 text-[#6b6072]">
+          <Text as="p" variant="body-sm" className="mt-0.5 text-m3-on-surface-variant">
             {statusCopy}
           </Text>
         </div>
@@ -474,11 +484,11 @@ function GameInfoPanel({
 
       <div className="mt-3">
         <div className="mb-2 flex items-center justify-between">
-          <Text as="span" variant="label-md" className="font-bold text-[#51465a]">
+          <Text as="span" variant="label-md" className="font-bold text-m3-on-surface-variant">
             Độ khó
           </Text>
           {recentMoves.length > 0 ? (
-            <Text as="span" variant="label-sm" className="text-[#756a7d]">
+            <Text as="span" variant="label-sm" className="text-m3-on-surface-variant">
               {moves.length} nước
             </Text>
           ) : null}
@@ -507,23 +517,33 @@ function GameInfoPanel({
         </ButtonGroup>
       </div>
 
-      <div className="mt-3 rounded-[8px] bg-[#f8f1fb] px-3 py-2">
+      <div className="mt-3 rounded-m3-lg bg-m3-surface-container px-3 py-2">
         <div className="flex items-center justify-between gap-3">
-          <Text as="span" variant="label-md" className="font-bold text-[#51465a]">
+          <Text as="span" variant="label-md" className="font-bold text-m3-on-surface-variant">
             Gần nhất
           </Text>
           <div className="flex min-w-0 flex-1 justify-end gap-1.5 overflow-hidden">
             {recentMoves.length > 0 ? (
-              recentMoves.map((move, index) => (
-                <span
-                  key={`${move.moveNumber}-${move.player}-${move.row}-${move.col}-${index}`}
-                  className="shrink-0 rounded-[6px] bg-[#fffbff] px-2 py-1 text-xs font-semibold text-[#4d4357]"
-                >
-                  {move.moveNumber}. {move.player === "human" ? "X" : "O"}
-                </span>
-              ))
+              <AnimatePresence mode="popLayout">
+                {recentMoves.map((move) => (
+                  <m.div
+                    key={`${move.moveNumber}-${move.player}-${move.row}-${move.col}`}
+                    layout
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.7, opacity: 0 }}
+                    transition={DEFAULT_SPATIAL_SPRING}
+                    className="shrink-0"
+                  >
+                    <Chip
+                      variant="assist"
+                      label={`${move.moveNumber}. ${move.player === "human" ? "X" : "O"}`}
+                    />
+                  </m.div>
+                ))}
+              </AnimatePresence>
             ) : (
-              <Text as="span" variant="body-sm" className="text-[#756a7d]">
+              <Text as="span" variant="body-sm" className="text-m3-on-surface-variant">
                 Chưa có nước
               </Text>
             )}
@@ -532,11 +552,11 @@ function GameInfoPanel({
       </div>
 
       {winner ? (
-        <div className="mt-3 rounded-[8px] bg-[#fff1c4] p-3 text-[#392f00]">
-          <Text as="p" variant="body-md" className="font-bold">
+        <Card variant="filled" disableElevation className="mt-3 rounded-m3-lg bg-m3-tertiary-container p-3">
+          <Text as="p" variant="body-md" className="font-bold text-m3-on-tertiary-container">
             {playerLabel[winner.player]} thắng với 5 quân liên tiếp.
           </Text>
-        </div>
+        </Card>
       ) : null}
     </Card>
   );
@@ -554,22 +574,35 @@ function PlayerSummary({
   tone: Player;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 rounded-[8px] border border-[#ded4e7] bg-[#fffbff] px-3 py-2">
+    <Card
+      variant="filled"
+      disableElevation
+      morphRadius={{ rest: "medium", hover: "large" }}
+      forceMotion
+      className="flex items-center justify-between gap-2 rounded-m3-lg bg-m3-surface-container px-3 py-2"
+    >
       <div className="flex min-w-0 items-center gap-2">
         <GamePiece player={tone} size="marker" />
         <div className="min-w-0">
-          <Text as="p" variant="label-md" className="text-[#6f6278]">
+          <Text as="p" variant="label-md" className="text-m3-on-surface-variant">
             {label}
           </Text>
-          <Text as="span" variant="title-sm" className="font-bold">
+          <Text as="span" variant="title-sm" className="font-bold text-m3-on-surface">
             {marker}
           </Text>
         </div>
       </div>
-      <Text as="span" variant="title-sm" className="font-bold text-[#30263a]">
-        {score}
-      </Text>
-    </div>
+      <m.div
+        key={score}
+        initial={{ scale: 1.35, opacity: 0.7 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={FAST_SPATIAL_SPRING}
+      >
+        <Text as="span" variant="title-sm" className="font-bold text-m3-on-surface">
+          {score}
+        </Text>
+      </m.div>
+    </Card>
   );
 }
 
@@ -577,9 +610,12 @@ const GamePiece = memo(function GamePiece({ player, size }: { player: Player; si
   const isHuman = player === "human";
 
   return (
-    <span
+    <m.span
+      initial={{ scale: 0.45, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={FAST_SPATIAL_SPRING}
       className={[
-        "piece-pop grid shrink-0 place-items-center",
+        "grid shrink-0 place-items-center",
         size === "board" ? "size-[76%]" : "size-8",
       ].join(" ")}
       aria-hidden="true"
@@ -588,10 +624,10 @@ const GamePiece = memo(function GamePiece({ player, size }: { player: Player; si
         shape={isHuman ? "cookie4Sided" : "circle"}
         width={100}
         height={100}
-        fill={isHuman ? "#6b46c1" : "#079669"}
+        fill={isHuman ? "var(--md-sys-color-primary)" : "var(--md-sys-color-tertiary)"}
         className="h-full w-full"
       />
-    </span>
+    </m.span>
   );
 });
 
